@@ -20,9 +20,11 @@ package org.apache.maven.scm.provider.git.gitexe.command.changelog;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.maven.scm.ChangeFile;
 import org.apache.maven.scm.ChangeSet;
@@ -34,6 +36,7 @@ import org.apache.regexp.RESyntaxException;
 /**
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  * @author Olivier Lamy
+ * @author Petr Kozelka
  * @version $Id$
  */
 public class GitChangeLogConsumer
@@ -54,6 +57,26 @@ public class GitChangeLogConsumer
      * State machine constant: expecting author information
      */
     private static final int STATUS_GET_AUTHOR = 2;
+
+    /**
+     * State machine constant: expecting parent hash information
+     */
+    private static final int STATUS_RAW_TREE = 21;
+
+    /**
+     * State machine constant: expecting parent hash information
+     */
+    private static final int STATUS_RAW_PARENT = 22;
+
+    /**
+     * State machine constant: expecting author name, email and timestamp information
+     */
+    private static final int STATUS_RAW_AUTHOR = 23;
+
+    /**
+     * State machine constant: expecting committer name, email and timestamp information
+     */
+    private static final int STATUS_RAW_COMMITTER = 24;
 
     /**
      * State machine constant: expecting date information
@@ -79,6 +102,26 @@ public class GitChangeLogConsumer
      * The pattern used to match git author lines
      */
     private static final String AUTHOR_PATTERN = "^Author: (.*)";
+
+    /**
+     * The pattern used to match git tree hash lines (raw mode)
+     */
+    private static final String RAW_TREE_PATTERN = "^tree ([:xdigit:]+)";
+
+    /**
+     * The pattern used to match git parent hash lines (raw mode)
+     */
+    private static final String RAW_PARENT_PATTERN = "^parent ([:xdigit:]+)";
+
+    /**
+     * The pattern used to match git author lines (raw mode)
+     */
+    private static final String RAW_AUTHOR_PATTERN = "^author (.+ <.+>) ([:digit:]+) (.*)";
+
+    /**
+     * The pattern used to match git author lines (raw mode)
+     */
+    private static final String RAW_COMMITTER_PATTERN = "^committer (.+ <.+>) ([:digit:]+) (.*)";
 
     /**
      * The pattern used to match git date lines
@@ -126,6 +169,26 @@ public class GitChangeLogConsumer
     private RE authorRegexp;
 
     /**
+     * The regular expression used to match tree hash lines in raw mode
+     */
+    private RE rawTreeRegexp;
+
+    /**
+     * The regular expression used to match parent hash lines in raw mode
+     */
+    private RE rawParentRegexp;
+
+    /**
+     * The regular expression used to match author lines in raw mode
+     */
+    private RE rawAuthorRegexp;
+
+    /**
+     * The regular expression used to match committer lines in raw mode
+     */
+    private RE rawCommitterRegexp;
+
+    /**
      * The regular expression used to match date lines
      */
     private RE dateRegexp;
@@ -152,6 +215,10 @@ public class GitChangeLogConsumer
             authorRegexp = new RE( AUTHOR_PATTERN );
             dateRegexp = new RE( DATE_PATTERN );
             fileRegexp = new RE( FILE_PATTERN );
+            rawTreeRegexp = new RE( RAW_TREE_PATTERN );
+            rawParentRegexp = new RE( RAW_PARENT_PATTERN );
+            rawAuthorRegexp = new RE( RAW_AUTHOR_PATTERN );
+            rawCommitterRegexp = new RE( RAW_COMMITTER_PATTERN );
         }
         catch ( RESyntaxException ex )
         {
@@ -182,16 +249,28 @@ public class GitChangeLogConsumer
                 processGetHeader( line );
                 break;
             case STATUS_GET_AUTHOR:
-                processGetAuthor( line );
+                processGetAuthor(line);
                 break;
             case STATUS_GET_DATE:
-                processGetDate( line, null );
+                processGetDate(line, null);
                 break;
             case STATUS_GET_COMMENT:
-                processGetComment( line );
+                processGetComment(line);
                 break;
             case STATUS_GET_FILE:
-                processGetFile( line );
+                processGetFile(line);
+                break;
+            case STATUS_RAW_TREE:
+                processGetRawTree(line);
+                break;
+            case STATUS_RAW_PARENT:
+                processGetRawParent(line);
+                break;
+            case STATUS_RAW_AUTHOR:
+                processGetRawAuthor(line);
+                break;
+            case STATUS_RAW_COMMITTER:
+                processGetRawCommitter(line);
                 break;
             default:
                 throw new IllegalStateException( "Unknown state: " + status );
@@ -235,15 +314,110 @@ public class GitChangeLogConsumer
      */
     private void processGetAuthor( String line )
     {
+        // this autodetects 'raw' format
+        if ( rawTreeRegexp.match( line )) {
+            status = STATUS_RAW_TREE;
+            processGetRawTree( line );
+            return;
+        }
+
         if ( !authorRegexp.match( line ) )
         {
             return;
         }
         String author = authorRegexp.getParen( 1 );
 
-        currentChange.setAuthor( author );
+        currentChange.setAuthor(author);
 
         status = STATUS_GET_DATE;
+    }
+
+    /**
+     * Process the current input line in the STATUS_RAW_TREE state.  This
+     * state gathers tree hash part of a log entry.
+     *
+     * @param line a line of text from the git log output
+     */
+    private void processGetRawTree( String line )
+    {
+        if ( !rawTreeRegexp.match( line ) )
+        {
+            return;
+        }
+        String treeHash = rawTreeRegexp.getParen( 1 );
+
+//TODO        currentChange.setTreeHash( treeHash );
+
+        status = STATUS_RAW_PARENT;
+    }
+
+    /**
+     * Process the current input line in the STATUS_RAW_PARENT state.  This
+     * state gathers parent revisions of a log entry.
+     *
+     * @param line a line of text from the git log output
+     */
+    private void processGetRawParent( String line )
+    {
+        if ( !rawParentRegexp.match( line ) )
+        {
+            status = STATUS_RAW_AUTHOR;
+            processGetRawAuthor(line);
+            return;
+        }
+        String parentHash = rawParentRegexp.getParen( 1 );
+
+//TODO        currentChange.addParentRevision( treeHash ); // note that merge commits have multiple parents
+
+    }
+
+    /**
+     * Process the current input line in the STATUS_RAW_AUTHOR state.  This
+     * state gathers all the author information of a log entry.
+     *
+     * @param line a line of text from the git log output
+     */
+    private void processGetRawAuthor( String line )
+    {
+        if ( !rawAuthorRegexp.match( line ) )
+        {
+            return;
+        }
+        String author = rawAuthorRegexp.getParen( 1 );
+        currentChange.setAuthor(author);
+
+        String time = rawAuthorRegexp.getParen( 2 );
+        String tz = rawAuthorRegexp.getParen( 3 );
+
+        final Calendar c = Calendar.getInstance( TimeZone.getTimeZone( tz ) );
+        c.setTimeInMillis( Long.parseLong( time ) * 1000 );
+        currentChange.setDate(c.getTime());
+
+        status = STATUS_RAW_COMMITTER;
+    }
+
+    /**
+     * Process the current input line in the STATUS_RAW_AUTHOR state.  This
+     * state gathers all the committer information of a log entry.
+     *
+     * @param line a line of text from the git log output
+     */
+    private void processGetRawCommitter( String line )
+    {
+        if ( !rawCommitterRegexp.match( line ) )
+        {
+            return;
+        }
+        String committer = rawCommitterRegexp.getParen( 1 );
+//TODO        currentChange.setCommitter(committer);
+
+        String time = rawCommitterRegexp.getParen( 2 );
+        String tz = rawCommitterRegexp.getParen( 3 );
+        final Calendar c = Calendar.getInstance(TimeZone.getTimeZone(tz));
+        c.setTimeInMillis(Long.parseLong(time) * 1000);
+//TODO        currentChange.setCommitterDate(c.getTime()); // == committer date
+
+        status = STATUS_GET_COMMENT;
     }
 
     /**
