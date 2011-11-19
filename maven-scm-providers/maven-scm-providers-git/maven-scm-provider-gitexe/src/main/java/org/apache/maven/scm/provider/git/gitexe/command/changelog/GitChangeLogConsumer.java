@@ -28,6 +28,7 @@ import java.util.TimeZone;
 
 import org.apache.maven.scm.ChangeFile;
 import org.apache.maven.scm.ChangeSet;
+import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.util.AbstractConsumer;
 import org.apache.regexp.RE;
@@ -500,12 +501,31 @@ public class GitChangeLogConsumer
             {
                 return;
             }
-            // String action = fileRegexp.getParen( 1 );
+            final String actionChar = fileRegexp.getParen( 1 );
             // action is currently not used
+            final ScmFileStatus action;
+            if ("A".equals(actionChar)) {
+                action = ScmFileStatus.ADDED;
+            } else if ("M".equals(actionChar)) {
+                action = ScmFileStatus.MODIFIED;
+            } else if ("D".equals(actionChar)) {
+                action = ScmFileStatus.DELETED;
+            } else if ("R".equals(actionChar)) {
+//TODO                action = ScmFileStatus.RENAMED;
+                action = ScmFileStatus.UNKNOWN;
+            } else if ("C".equals(actionChar)) {
+//TODO                action = ScmFileStatus.COPIED;
+                action = ScmFileStatus.UNKNOWN;
+            } else {
+                action = ScmFileStatus.UNKNOWN;
+            }
 
             String name = fileRegexp.getParen( 2 );
 
-            currentChange.addFile( new ChangeFile( name, currentRevision ) );
+            final ChangeFile changeFile = new ChangeFile(name, currentRevision);
+            changeFile.setAction( action );
+            //TODO: set original path+rev for move/copy, similarity index, count of added/removed lines, hunks, ...
+            currentChange.addFile( changeFile );
         }
     }
 

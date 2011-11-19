@@ -45,6 +45,12 @@ public class ChangeFile
     private String revision;
 
     /**
+     * edit type on the file
+     * note: perhaps we should use a different type, ideally enum ? this one seems to target quite different usecases ...
+     */
+    private ScmFileStatus action;
+
+    /**
      * Constructor for the ChangeFile object without all details available
      *
      * @param name file name
@@ -107,6 +113,14 @@ public class ChangeFile
         this.revision = revision;
     }
 
+    public ScmFileStatus getAction() {
+        return action;
+    }
+
+    public void setAction(ScmFileStatus action) {
+        this.action = action;
+    }
+
     /**
      * Provide a version of the object as a string for debugging purposes
      *
@@ -119,6 +133,11 @@ public class ChangeFile
         if ( getRevision() != null )
         {
             buffer.append( ", " ).append( getRevision() );
+        }
+
+        if ( getAction() != null )
+        {
+            buffer.append( ", " ).append( getAction() );
         }
 
         return buffer.toString();
