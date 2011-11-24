@@ -108,6 +108,7 @@
     <module>maven-scm-providers</module>
     <module>maven-scm-client</module>
     <module>maven-scm-plugin</module>
+    <module>../../../bitbucket.org/rusty/buildbox-maven-integration</module>
   </modules>
 
   <scm>

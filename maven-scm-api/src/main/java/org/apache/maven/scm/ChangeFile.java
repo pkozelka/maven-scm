@@ -51,6 +51,16 @@ public class ChangeFile
     private ScmFileStatus action;
 
     /**
+     * the name before copying or moving
+     */
+    private String originalName;
+
+    /**
+     * the revision from which we {@link ScmFileStatus copied} or {@link ScmFileStatus moved} this file or directory
+     */
+    private String originalRevision;
+
+    /**
      * Constructor for the ChangeFile object without all details available
      *
      * @param name file name
@@ -84,16 +94,6 @@ public class ChangeFile
     }
 
     /**
-     * Gets the revision attribute of the ChangeLogFile object.
-     *
-     * @return the latest revision of the file
-     */
-    public String getRevision()
-    {
-        return revision;
-    }
-
-    /**
      * Setter for property name.
      *
      * @param name New value of property name.
@@ -101,6 +101,33 @@ public class ChangeFile
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName( String originalName ) {
+
+        this.originalName = originalName;
+    }
+
+    public String getOriginalRevision() {
+        return originalRevision;
+    }
+
+    public void setOriginalRevision(String originalRevision) {
+        this.originalRevision = originalRevision;
+    }
+
+    /**
+     * Gets the revision attribute of the ChangeLogFile object.
+     *
+     * @return the latest revision of the file
+     */
+    public String getRevision()
+    {
+        return revision;
     }
 
     /**
@@ -117,7 +144,7 @@ public class ChangeFile
         return action;
     }
 
-    public void setAction(ScmFileStatus action) {
+    public void setAction( ScmFileStatus action ) {
         this.action = action;
     }
 

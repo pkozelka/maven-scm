@@ -368,7 +368,7 @@ public class GitChangeLogConsumer
         }
         String parentHash = rawParentRegexp.getParen( 1 );
 
-//TODO        currentChange.addParentRevision( treeHash ); // note that merge commits have multiple parents
+//        currentChange.addParentRevision( parentHash ); // note that merge commits have multiple parents
 
     }
 
@@ -504,6 +504,8 @@ public class GitChangeLogConsumer
             final String actionChar = fileRegexp.getParen( 1 );
             // action is currently not used
             final ScmFileStatus action;
+            String name = fileRegexp.getParen( 2 );
+            String originalName = null;
             if ("A".equals(actionChar)) {
                 action = ScmFileStatus.ADDED;
             } else if ("M".equals(actionChar)) {
@@ -512,17 +514,22 @@ public class GitChangeLogConsumer
                 action = ScmFileStatus.DELETED;
             } else if ("R".equals(actionChar)) {
                 action = ScmFileStatus.RENAMED;
+                originalName = name;
+                name = fileRegexp.getParen( 4 );
+//TODO                originalRevision = currentChange.getParentRevision();
             } else if ("C".equals(actionChar)) {
                 action = ScmFileStatus.COPIED;
+                originalName = name;
+                name = fileRegexp.getParen( 4 );
+//TODO                originalRevision = currentChange.getParentRevision();
             } else {
                 action = ScmFileStatus.UNKNOWN;
             }
 
-            String name = fileRegexp.getParen( 2 );
-
             final ChangeFile changeFile = new ChangeFile(name, currentRevision);
             changeFile.setAction( action );
-            //TODO: set original path+rev for move/copy, similarity index, count of added/removed lines, hunks, ...
+            changeFile.setOriginalName( originalName );
+            //TODO: set similarity index, count of added/removed lines, hunks, ...
             currentChange.addFile( changeFile );
         }
     }
