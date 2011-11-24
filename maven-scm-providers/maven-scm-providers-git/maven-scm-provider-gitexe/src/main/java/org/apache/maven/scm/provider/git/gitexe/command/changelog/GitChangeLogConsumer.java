@@ -511,11 +511,9 @@ public class GitChangeLogConsumer
             } else if ("D".equals(actionChar)) {
                 action = ScmFileStatus.DELETED;
             } else if ("R".equals(actionChar)) {
-//TODO                action = ScmFileStatus.RENAMED;
-                action = ScmFileStatus.UNKNOWN;
+                action = ScmFileStatus.RENAMED;
             } else if ("C".equals(actionChar)) {
-//TODO                action = ScmFileStatus.COPIED;
-                action = ScmFileStatus.UNKNOWN;
+                action = ScmFileStatus.COPIED;
             } else {
                 action = ScmFileStatus.UNKNOWN;
             }
