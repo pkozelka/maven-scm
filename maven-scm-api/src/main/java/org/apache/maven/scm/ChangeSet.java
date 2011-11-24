@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.util.FilenameUtils;
@@ -118,6 +119,16 @@ public class ChangeSet
      * @since 1.3
      */
     private String revision;
+
+    /**
+     * Revision from which this one originates
+     */
+    private String parentRevision;
+
+    /**
+     * Revisions that were merged into this one
+     */
+    private Set<String> mergedRevisions;
 
     /**
      * @param strDate         Date the changes were committed
@@ -567,5 +578,25 @@ public class ChangeSet
             }
         }
         return buffer.toString();
+    }
+
+    public String getParentRevision() {
+        return parentRevision;
+    }
+
+    public void setParentRevision(String parentRevision) {
+        this.parentRevision = parentRevision;
+    }
+
+    public void addMergedRevision(String mergedRevision) {
+        mergedRevisions.add(mergedRevision);
+    }
+
+    public Set<String> getMergedRevisions() {
+        return mergedRevisions;
+    }
+
+    public void setMergedRevisions(Set<String> mergedRevisions) {
+        this.mergedRevisions = mergedRevisions;
     }
 }

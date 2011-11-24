@@ -368,8 +368,20 @@ public class GitChangeLogConsumer
         }
         String parentHash = rawParentRegexp.getParen( 1 );
 
-//        currentChange.addParentRevision( parentHash ); // note that merge commits have multiple parents
+        addParentRevision(parentHash);
+    }
 
+    /**
+     * In GIT, both parent and merged revisions are called parent. Fortunately, the real parent comes first in the log.
+     * This method takes care of the difference.
+     * @param hash -
+     */
+    private void addParentRevision(String hash) {
+        if (currentChange.getParentRevision() == null) {
+            currentChange.setParentRevision( hash );
+        } else {
+            currentChange.addMergedRevision( hash );
+        }
     }
 
     /**
@@ -506,6 +518,7 @@ public class GitChangeLogConsumer
             final ScmFileStatus action;
             String name = fileRegexp.getParen( 2 );
             String originalName = null;
+            String originalRevision = null;
             if ("A".equals(actionChar)) {
                 action = ScmFileStatus.ADDED;
             } else if ("M".equals(actionChar)) {
@@ -516,12 +529,12 @@ public class GitChangeLogConsumer
                 action = ScmFileStatus.RENAMED;
                 originalName = name;
                 name = fileRegexp.getParen( 4 );
-//TODO                originalRevision = currentChange.getParentRevision();
+                originalRevision = currentChange.getParentRevision();
             } else if ("C".equals(actionChar)) {
                 action = ScmFileStatus.COPIED;
                 originalName = name;
                 name = fileRegexp.getParen( 4 );
-//TODO                originalRevision = currentChange.getParentRevision();
+                originalRevision = currentChange.getParentRevision();
             } else {
                 action = ScmFileStatus.UNKNOWN;
             }
@@ -529,6 +542,7 @@ public class GitChangeLogConsumer
             final ChangeFile changeFile = new ChangeFile(name, currentRevision);
             changeFile.setAction( action );
             changeFile.setOriginalName( originalName );
+            changeFile.setOriginalRevision( originalRevision );
             //TODO: set similarity index, count of added/removed lines, hunks, ...
             currentChange.addFile( changeFile );
         }
