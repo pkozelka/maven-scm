@@ -155,16 +155,27 @@ public class ChangeFile
      */
     public String toString()
     {
-        StringBuilder buffer = new StringBuilder( getName() );
+        StringBuilder buffer = new StringBuilder(  );
 
+        if ( getAction() != null )
+        {
+            buffer.append( "[" ).append( getAction() ).append( "]:" );
+        }
+
+        buffer.append( getName() );
         if ( getRevision() != null )
         {
             buffer.append( ", " ).append( getRevision() );
         }
 
-        if ( getAction() != null )
+        if ( getOriginalName() != null )
         {
-            buffer.append( ", " ).append( getAction() );
+            buffer.append( ", originalName" ).append( getOriginalName() );
+        }
+
+        if ( getOriginalRevision() != null )
+        {
+            buffer.append( ", originalRevision=" ).append( getOriginalRevision() );
         }
 
         return buffer.toString();
