@@ -58,19 +58,20 @@ public class SvnChangeLogConsumer
     private static final int GET_COMMENT = 3;
 
     /**
-     * A file line begins with a space character
+     * There is always action and affected path; when copying/moving, recognize also original path and revision
      */
-    private static final String FILE_BEGIN_TOKEN = " ";
+    private static final RE FILE_PATTERN = new RE( "^\\s\\s\\s([:upper:])\\s(.+)$" );
+
+    /**
+     * This matches the 'original file info' part of the complete file line.
+     * Note the use of [:alpha:] instead of literal 'from' - this is meant to allow non-English localizations.
+     */
+    private static final RE ORIG_FILE_PATTERN = new RE( "\\([:alpha:]+ (.+):(\\d+)\\)" );
 
     /**
      * The file section ends with a blank line
      */
     private static final String FILE_END_TOKEN = "";
-
-    /**
-     * The filename starts after 5 characters
-     */
-    private static final int FILE_START_INDEX = 5;
 
     /**
      * The comment section ends with a dashed line
@@ -233,10 +234,17 @@ public class SvnChangeLogConsumer
      */
     private void processGetFile( String line )
     {
-        if ( line.startsWith( FILE_BEGIN_TOKEN ) )
-        {
-            // Skip the status flags and just get the name of the file
-            String name = line.substring( FILE_START_INDEX );
+        if (FILE_PATTERN.match( line ))  {
+            final String fileinfo = FILE_PATTERN.getParen( 2 );
+            String name = fileinfo;
+            final int n = fileinfo.indexOf( " (" );
+            if (n > 1 && fileinfo.endsWith( ")" )) {
+                final String origFileInfo = fileinfo.substring( n );
+                if (ORIG_FILE_PATTERN.match( origFileInfo )) {
+                    // if original file is present, we must extract only the affected one at the beginning
+                    name = fileinfo.substring( 0, n );
+                }
+            }
             currentChange.addFile( new ChangeFile( name, currentRevision ) );
 
             status = GET_FILE;
