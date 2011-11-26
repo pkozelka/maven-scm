@@ -255,6 +255,8 @@ public class SvnChangeLogConsumerTest
 
             List files = entry.getFiles();
 
+            int origFileCounter = 0;
+
             for ( Iterator it = files.iterator(); it.hasNext(); )
             {
                 ChangeFile file = (ChangeFile) it.next();
@@ -267,7 +269,13 @@ public class SvnChangeLogConsumerTest
 
                 // files in this log are known not to contain space
                 Assert.assertEquals( "Unexpected space found in filename: " + fileName, -1, fileName.indexOf( " " ) );
+
+                if (file.getOriginalName() != null) {
+                    origFileCounter ++;
+                }
             }
+
+            Assert.assertEquals( "Unexpected number of file copy records", 1, origFileCounter );
 
             out.append( "==============================" );
         }
