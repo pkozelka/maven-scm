@@ -243,6 +243,8 @@ public class SvnChangeLogConsumerTest
 
         out.append( "nb modifications : " + modifications.size() );
 
+        int origFileCounter = 0;
+
         for ( Iterator i = modifications.iterator(); i.hasNext(); )
         {
             ChangeSet entry = (ChangeSet) i.next();
@@ -254,8 +256,6 @@ public class SvnChangeLogConsumerTest
             out.append( "Comment:" + entry.getComment() );
 
             List files = entry.getFiles();
-
-            int origFileCounter = 0;
 
             for ( Iterator it = files.iterator(); it.hasNext(); )
             {
@@ -275,10 +275,10 @@ public class SvnChangeLogConsumerTest
                 }
             }
 
-            Assert.assertEquals( "Unexpected number of file copy records", 1, origFileCounter );
-
             out.append( "==============================" );
         }
+
+        Assert.assertEquals( "Unexpected number of file copy records", 1, origFileCounter );
 
         if ( logger.isDebugEnabled() )
         {

@@ -237,15 +237,22 @@ public class SvnChangeLogConsumer
         if (FILE_PATTERN.match( line ))  {
             final String fileinfo = FILE_PATTERN.getParen( 2 );
             String name = fileinfo;
+            String originalName = null;
+            String originalRev = null;
             final int n = fileinfo.indexOf( " (" );
             if (n > 1 && fileinfo.endsWith( ")" )) {
                 final String origFileInfo = fileinfo.substring( n );
                 if (ORIG_FILE_PATTERN.match( origFileInfo )) {
-                    // if original file is present, we must extract only the affected one at the beginning
+                    // if original file is present, we must extract the affected one from the beginning
                     name = fileinfo.substring( 0, n );
+                    originalName = ORIG_FILE_PATTERN.getParen( 1 );
+                    originalRev = ORIG_FILE_PATTERN.getParen( 2 );
                 }
             }
-            currentChange.addFile( new ChangeFile( name, currentRevision ) );
+            final ChangeFile changeFile = new ChangeFile( name, currentRevision );
+            changeFile.setOriginalName( originalName );
+            changeFile.setOriginalRevision( originalRev );
+            currentChange.addFile( changeFile );
 
             status = GET_FILE;
         }
