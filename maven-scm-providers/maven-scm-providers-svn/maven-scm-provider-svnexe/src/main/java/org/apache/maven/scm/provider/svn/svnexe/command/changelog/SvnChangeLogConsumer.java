@@ -19,10 +19,6 @@ package org.apache.maven.scm.provider.svn.svnexe.command.changelog;
  * under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.maven.scm.ChangeFile;
 import org.apache.maven.scm.ChangeSet;
 import org.apache.maven.scm.ScmFileStatus;
@@ -30,6 +26,10 @@ import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.svn.SvnChangeSet;
 import org.apache.maven.scm.util.AbstractConsumer;
 import org.apache.regexp.RE;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
@@ -108,21 +108,21 @@ public class SvnChangeLogConsumer
     /**
      * The regular expression used to match header lines
      */
-    private static final RE HEADER_REG_EXP =
-        new RE("^(.+) \\| (.+) \\| (.+) \\|.*$");
-    
+    private static final RE HEADER_REG_EXP = new RE( "^(.+) \\| (.+) \\| (.+) \\|.*$" );
+
     private static final int REVISION_GROUP = 1;
+
     private static final int AUTHOR_GROUP = 2;
+
     private static final int DATE_GROUP = 3;
-    
-    private static final RE REVISION_REG_EXP1 = new RE("rev (\\d+):");
-    
-    private static final RE REVISION_REG_EXP2 = new RE("r(\\d+)");
-    
-    private static final RE DATE_REG_EXP = new RE(
-        "(\\d+-\\d+-\\d+ " +             // date 2002-08-24
-        "\\d+:\\d+:\\d+) " +             // time 16:01:00
-        "([\\-+])(\\d\\d)(\\d\\d)");     // gmt offset -0400);)
+
+    private static final RE REVISION_REG_EXP1 = new RE( "rev (\\d+):" );
+
+    private static final RE REVISION_REG_EXP2 = new RE( "r(\\d+)" );
+
+    private static final RE DATE_REG_EXP = new RE( "(\\d+-\\d+-\\d+ " +             // date 2002-08-24
+                                                       "\\d+:\\d+:\\d+) " +             // time 16:01:00
+                                                       "([\\-+])(\\d\\d)(\\d\\d)" );     // gmt offset -0400);)
 
     private final String userDateFormat;
 
@@ -145,7 +145,9 @@ public class SvnChangeLogConsumer
     // StreamConsumer Implementation
     // ----------------------------------------------------------------------
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void consumeLine( String line )
     {
         if ( getLogger().isDebugEnabled() )
@@ -183,45 +185,44 @@ public class SvnChangeLogConsumer
      */
     private void processGetHeader( String line )
     {
-        if ( !HEADER_REG_EXP.match(line) )
+        if ( !HEADER_REG_EXP.match( line ) )
         {
             // The header line is not found. Intentionally do nothing.
             return;
         }
 
-        currentRevision = getRevision(HEADER_REG_EXP.getParen(
-                REVISION_GROUP ));
+        currentRevision = getRevision( HEADER_REG_EXP.getParen( REVISION_GROUP ) );
 
         currentChange = new SvnChangeSet();
 
         currentChange.setAuthor( HEADER_REG_EXP.getParen( AUTHOR_GROUP ) );
 
-        currentChange.setDate( getDate(HEADER_REG_EXP.getParen( DATE_GROUP )) );
-        
+        currentChange.setDate( getDate( HEADER_REG_EXP.getParen( DATE_GROUP ) ) );
+
         currentChange.setRevision( currentRevision );
 
         status = GET_FILE;
     }
-    
+
     /**
      * Gets the svn revision, from the svn log revision output.
-     * 
+     *
      * @param revisionOutput
      * @return the svn revision
      */
-    private String getRevision(final String revisionOutput)
+    private String getRevision( final String revisionOutput )
     {
-        if (REVISION_REG_EXP1.match(revisionOutput))
+        if ( REVISION_REG_EXP1.match( revisionOutput ) )
         {
-            return REVISION_REG_EXP1.getParen(1);
+            return REVISION_REG_EXP1.getParen( 1 );
         }
-        else if (REVISION_REG_EXP2.match(revisionOutput))
+        else if ( REVISION_REG_EXP2.match( revisionOutput ) )
         {
-            return REVISION_REG_EXP2.getParen(1);
+            return REVISION_REG_EXP2.getParen( 1 );
         }
         else
         {
-          throw new IllegalOutputException(revisionOutput);
+            throw new IllegalOutputException( revisionOutput );
         }
     }
 
@@ -307,7 +308,7 @@ public class SvnChangeLogConsumer
     /**
      * Converts the date time stamp from the svn output into a date
      * object.
-     * 
+     *
      * @param dateOutput The date output from an svn log command.
      * @return A date representing the time stamp of the log entry.
      */
