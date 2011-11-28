@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.maven.scm.ChangeFile;
 import org.apache.maven.scm.ChangeSet;
+import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.svn.SvnChangeSet;
 import org.apache.maven.scm.util.AbstractConsumer;
@@ -234,22 +235,37 @@ public class SvnChangeLogConsumer
      */
     private void processGetFile( String line )
     {
-        if (FILE_PATTERN.match( line ))  {
+        if ( FILE_PATTERN.match( line ) )  {
             final String fileinfo = FILE_PATTERN.getParen( 2 );
             String name = fileinfo;
             String originalName = null;
             String originalRev = null;
             final int n = fileinfo.indexOf( " (" );
-            if (n > 1 && fileinfo.endsWith( ")" )) {
+            if ( n > 1 && fileinfo.endsWith( ")" ) ) {
                 final String origFileInfo = fileinfo.substring( n );
-                if (ORIG_FILE_PATTERN.match( origFileInfo )) {
+                if (ORIG_FILE_PATTERN.match( origFileInfo ) ) {
                     // if original file is present, we must extract the affected one from the beginning
-                    name = fileinfo.substring( 0, n );
+                    name = fileinfo.substring(0, n);
                     originalName = ORIG_FILE_PATTERN.getParen( 1 );
                     originalRev = ORIG_FILE_PATTERN.getParen( 2 );
                 }
             }
+            final String actionStr = ORIG_FILE_PATTERN.getParen( 1 );
+            final ScmFileStatus action;
+            if ( "A".equals( actionStr ) ) {
+                //TODO: this may even change to MOVED if we later explore whole changeset and find matching DELETED
+                action = originalRev == null ? ScmFileStatus.ADDED : ScmFileStatus.COPIED;
+            } else if ( "D".equals( actionStr ) ) {
+                action = ScmFileStatus.DELETED;
+            } else if ( "M".equals( actionStr ) ) {
+                action = ScmFileStatus.MODIFIED;
+            } else if ( "R".equals( actionStr ) ) {
+                action = ScmFileStatus.UPDATED; //== REPLACED in svn terms
+            } else {
+                action = ScmFileStatus.UNKNOWN;
+            }
             final ChangeFile changeFile = new ChangeFile( name, currentRevision );
+            changeFile.setAction( action );
             changeFile.setOriginalName( originalName );
             changeFile.setOriginalRevision( originalRev );
             currentChange.addFile( changeFile );
