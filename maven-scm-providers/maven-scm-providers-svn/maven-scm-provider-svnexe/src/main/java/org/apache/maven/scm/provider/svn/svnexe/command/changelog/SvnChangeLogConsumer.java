@@ -251,7 +251,7 @@ public class SvnChangeLogConsumer
                     originalRev = ORIG_FILE_PATTERN.getParen( 2 );
                 }
             }
-            final String actionStr = ORIG_FILE_PATTERN.getParen( 1 );
+            final String actionStr = FILE_PATTERN.getParen( 1 );
             final ScmFileStatus action;
             if ( "A".equals( actionStr ) ) {
                 //TODO: this may even change to MOVED if we later explore whole changeset and find matching DELETED
@@ -265,6 +265,7 @@ public class SvnChangeLogConsumer
             } else {
                 action = ScmFileStatus.UNKNOWN;
             }
+            System.out.println( actionStr + " : " + name );
             final ChangeFile changeFile = new ChangeFile( name, currentRevision );
             changeFile.setAction( action );
             changeFile.setOriginalName( originalName );
