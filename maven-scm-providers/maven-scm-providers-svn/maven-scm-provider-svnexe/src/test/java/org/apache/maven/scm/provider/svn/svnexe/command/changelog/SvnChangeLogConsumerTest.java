@@ -240,7 +240,7 @@ public class SvnChangeLogConsumerTest
         int origFileCounter = 0;
 
         // must use *Linked* HashMap to have predictable toString
-        final Map<ScmFileStatus, AtomicInteger> actionCounters = new LinkedHashMap<ScmFileStatus, AtomicInteger>();
+        final Map<ScmFileStatus, AtomicInteger> summary = new LinkedHashMap<ScmFileStatus, AtomicInteger>();
 
         for ( ChangeSet entry : consumer.getModifications() )
         {
@@ -254,10 +254,10 @@ public class SvnChangeLogConsumerTest
             for ( ChangeFile file : entry.getFiles() )
             {
                 final ScmFileStatus action = file.getAction();
-                if ( ! actionCounters.containsKey( action ) ) {
-                    actionCounters.put( action, new AtomicInteger() );
+                if ( ! summary.containsKey( action ) ) {
+                    summary.put( action, new AtomicInteger() );
                 }
-                actionCounters.get( action ).incrementAndGet();
+                summary.get( action ).incrementAndGet();
 
                 final String fileName = file.getName();
                 out.append( "File:" + fileName );
@@ -278,7 +278,8 @@ public class SvnChangeLogConsumerTest
 
         Assert.assertEquals( "Unexpected number of file copy records", 1, origFileCounter );
 
-        Assert.assertEquals( "Action summary differs from expectations", "{modified=626, deleted=56, added=310, copied=1}", actionCounters.toString() );
+        Assert.assertEquals( "Action summary differs from expectations",
+                             "{modified=626, deleted=56, added=310, copied=1}", summary.toString() );
 
         if ( logger.isDebugEnabled() )
         {
