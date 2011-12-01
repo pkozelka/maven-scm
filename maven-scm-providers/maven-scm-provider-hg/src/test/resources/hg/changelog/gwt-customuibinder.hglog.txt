@@ -1,0 +1,325 @@
+changeset:   38:3776d4b8f50d
+tag:         tip
+user:        justin@jhickman.com
+date:        Fri Nov 04 09:54:11 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare for next development iteration
+
+
+changeset:   37:1c455721d313
+user:        justin@jhickman.com
+date:        Fri Nov 04 09:54:10 2011 -0500
+files:       .hgtags
+description:
+[maven-release-plugin]  copy for tag gwt-customuibinder-1.2.0
+
+
+changeset:   36:5af6f4fe818c
+tag:         gwt-customuibinder-1.2.0
+user:        justin@jhickman.com
+date:        Fri Nov 04 09:54:08 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare release gwt-customuibinder-1.2.0
+
+
+changeset:   35:7d6926fac89d
+user:        justin@jhickman.com
+date:        Fri Nov 04 09:53:18 2011 -0500
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java
+description:
+update license information
+
+
+changeset:   34:bba2777a51ec
+user:        justin@jhickman.com
+date:        Fri Nov 04 09:49:15 2011 -0500
+files:       pom.xml src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java src/com/google/gwt/uibinder/rebind/CustomUiBinderParser.java src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java
+description:
+update source for GWT 2.4.  Changing SNAPSHOT release for 1.2.0
+
+
+changeset:   33:abfac8c7b069
+user:        justin@jhickman.com
+date:        Tue May 10 00:34:44 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare for next development iteration
+
+
+changeset:   32:ed61f1a59e3b
+user:        justin@jhickman.com
+date:        Tue May 10 00:34:42 2011 -0500
+files:       .hgtags
+description:
+[maven-release-plugin]  copy for tag gwt-customuibinder-1.1.0
+
+
+changeset:   31:3d1f5a6e5979
+tag:         gwt-customuibinder-1.1.0
+user:        justin@jhickman.com
+date:        Tue May 10 00:34:40 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare release gwt-customuibinder-1.1.0
+
+
+changeset:   30:112dfc5ecae9
+user:        justin@jhickman.com
+date:        Tue May 10 00:26:15 2011 -0500
+files:       .settings/com.google.gdt.eclipse.core.prefs pom.xml src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java
+description:
+Updating the CustomUiBinderWriter to handle the changed constructor that takes a new argument for using SafeHTML Templates
+
+
+changeset:   29:4cf575fd5227
+user:        justin@jhickman.com
+date:        Tue May 10 00:08:51 2011 -0500
+files:       pom.xml
+description:
+creating snapshot for 1.1.0 release.  This will contain the upgrade for GWT 2.3
+
+
+changeset:   28:2973f5cfa994
+user:        justin@jhickman.com
+date:        Tue May 10 00:00:13 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare for next development iteration
+
+
+changeset:   27:23d891533a3f
+user:        justin@jhickman.com
+date:        Tue May 10 00:00:12 2011 -0500
+files:       .hgtags
+description:
+[maven-release-plugin]  copy for tag gwt-customuibinder-1.0.2
+
+
+changeset:   26:984e7c0df524
+tag:         gwt-customuibinder-1.0.2
+user:        justin@jhickman.com
+date:        Tue May 10 00:00:10 2011 -0500
+files:       pom.xml
+description:
+[maven-release-plugin] prepare release gwt-customuibinder-1.0.2
+
+
+changeset:   25:5f6cddcbaea6
+user:        justin@jhickman.com
+date:        Mon May 09 23:59:38 2011 -0500
+files:       pom.xml
+description:
+changing the release plugin to 2.1
+
+
+changeset:   24:e1093b18fc82
+user:        justin@jhickman.com
+date:        Mon May 09 22:51:54 2011 -0500
+files:       .hgignore
+description:
+adding a couple of ignores to the list.
+
+
+changeset:   23:98bf34a4f5cf
+user:        justin@jhickman.com
+date:        Mon May 09 22:44:34 2011 -0500
+files:       pom.xml
+description:
+adding 1.0.2-SNAPSHOT with some minor pom changes
+
+
+changeset:   22:60dc259931ff
+user:        justin@jhickman.com
+date:        Sun Apr 24 17:33:41 2011 -0500
+files:       pom.xml
+description:
+making more changes for deploying on public maven repository
+
+
+changeset:   21:a5c29a60dd8f
+user:        justin@jhickman.com
+date:        Fri Apr 22 23:25:37 2011 -0500
+files:       .hgtags
+description:
+Added tag 1.0.1 for changeset 2470adbdeb5b
+
+
+changeset:   20:2470adbdeb5b
+tag:         1.0.1
+user:        justin@jhickman.com
+date:        Fri Apr 22 23:25:34 2011 -0500
+files:       pom.xml
+description:
+adding missing items from the requirements for a Maven Central sync
+
+
+changeset:   19:f4a9d9f83357
+user:        justin@jhickman.com
+date:        Fri Apr 22 23:12:48 2011 -0500
+files:       .hgtags
+description:
+Added tag 1.0.1 for changeset 506f802e5451
+
+
+changeset:   18:506f802e5451
+user:        justin@jhickman.com
+date:        Fri Apr 22 23:12:37 2011 -0500
+files:       pom.xml
+description:
+updating pom to make it more Maven repository friendly
+
+
+changeset:   17:f686e936c270
+user:        justin@jhickman.com
+date:        Fri Apr 22 23:12:01 2011 -0500
+files:       .hgtags
+description:
+Added tag 1.0.1 for changeset d4169bfdafa7
+
+
+changeset:   16:d4169bfdafa7
+user:        justin@jhickman.com
+date:        Sat Apr 16 22:03:07 2011 -0500
+files:       .hgtags
+description:
+Added tag 1.0 for changeset 4ce23fff3d85
+
+
+changeset:   15:4ce23fff3d85
+tag:         1.0
+user:        justin@jhickman.com
+date:        Fri Apr 08 00:24:58 2011 -0500
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java
+description:
+Removing redundant license.
+
+
+changeset:   14:78a4388e6ac0
+user:        justin@jhickman.com
+date:        Fri Apr 08 00:22:55 2011 -0500
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java src/com/jhickman/web/gwt/customuibinder/rebind/CustomHandlerEvaluator.java
+description:
+removing redundant license entries
+
+
+changeset:   13:9490a4b244d3
+user:        justin@jhickman.com
+date:        Fri Apr 08 00:21:22 2011 -0500
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java src/com/google/gwt/uibinder/rebind/CustomUiBinderParser.java src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java src/com/jhickman/web/gwt/customuibinder/CustomUiBinder.gwt.xml src/com/jhickman/web/gwt/customuibinder/rebind/CustomHandlerEvaluator.java src/com/jhickman/web/gwt/customuibinder/rebind/Reflector.java src/com/jhickman/web/gwt/customuibinder/resourceparsers/ResourceParser.java
+description:
+applying license to code
+
+
+changeset:   12:22af826886ec
+user:        justin@jhickman.com
+date:        Fri Apr 08 00:07:12 2011 -0500
+files:       pom.xml src/com/google/gwt/uibinder/rebind/CustomUiBinderParser.java src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java src/com/jhickman/web/gwt/customuibinder/CustomUiBinder.gwt.xml src/com/jhickman/web/gwt/customuibinder/rebind/Reflector.java src/com/jhickman/web/gwt/customuibinder/resourceparsers/ResourceParser.java
+description:
+Adding support for custom ResourceParser's.  This is similar to the <ui:data>, <ui:with>, etc elements.
+
+
+changeset:   11:a81d37c7e02f
+user:        justin@jhickman.com
+date:        Fri Apr 08 00:03:16 2011 -0500
+files:       pom.xml src/etc/header.txt src/license/LICENSE
+description:
+Adding maven support for applying the license to all classes.  Will apply later.
+
+
+changeset:   10:a978684f9eaf
+user:        justin@jhickman.com
+date:        Fri Mar 25 07:16:53 2011 -0500
+files:       .hgtags
+description:
+Added tag 0.2 for changeset 968ff336c344
+
+
+changeset:   9:968ff336c344
+tag:         0.2
+user:        justin@jhickman.com
+date:        Fri Mar 25 07:16:17 2011 -0500
+files:       pom.xml
+description:
+updating dependency to GWT 2.2.0
+
+
+changeset:   8:f6a28a360722
+user:        justin@jhickman.com
+date:        Mon Mar 14 22:29:45 2011 -0500
+files:       pom.xml
+description:
+Updating pom for version 0.2
+
+Updating the javac encoding
+adding maven compile plugin version
+
+
+changeset:   7:707e2bebf9b4
+user:        justin@jhickman.com
+date:        Mon Mar 14 21:30:54 2011 -0500
+files:       .classpath .project .settings/com.google.gwt.eclipse.core.prefs
+description:
+Update to the GWT Eclipse plugin
+
+
+changeset:   6:e2055f9e77a8
+user:        justin@jhickman.com
+date:        Wed Feb 23 06:51:45 2011 -0600
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java
+description:
+Changing the Class.forName to use the current Thread ContextClassLoader
+
+
+changeset:   5:305cf74c93b2
+user:        justin@jhickman.com
+date:        Tue Dec 21 09:35:54 2010 -0600
+files:       .hgignore pom.xml
+description:
+adding a maven pom file for easier jar creation
+
+
+changeset:   4:082f37d0eafc
+user:        justin@jhickman.com
+date:        Tue Dec 21 09:34:08 2010 -0600
+files:       .classpath
+description:
+modifying the Eclipse classpath after upgrading the Google plugin
+
+
+changeset:   3:a2973ad07e1a
+user:        justin@jhickman.com
+date:        Sun Nov 21 10:52:42 2010 -0600
+files:       .hgtags
+description:
+Added tag 0.1 for changeset ec7b490ba043
+
+
+changeset:   2:ec7b490ba043
+tag:         0.1
+user:        justin@jhickman.com
+date:        Sun Nov 21 07:40:49 2010 -0600
+files:       src/com/google/gwt/uibinder/rebind/CustomUiBinderGenerator.java src/com/google/gwt/uibinder/rebind/CustomUiBinderWriter.java src/com/jhickman/web/gwt/customuibinder/CustomUiBinder.gwt.xml src/com/jhickman/web/gwt/customuibinder/rebind/CustomHandlerEvaluator.java
+description:
+initial add of project files.
+
+
+changeset:   1:91290eb4e6a8
+user:        justin@jhickman.com
+date:        Sun Nov 21 07:39:11 2010 -0600
+files:       .hgignore
+description:
+adding .hgignore file
+
+
+changeset:   0:28c36a85d72d
+user:        justin@jhickman.com
+date:        Sun Nov 21 07:38:41 2010 -0600
+files:       .classpath .project .settings/org.eclipse.jdt.core.prefs
+description:
+Initial add to project.
+
+This commit contains just the eclipse project settings.
+
+
