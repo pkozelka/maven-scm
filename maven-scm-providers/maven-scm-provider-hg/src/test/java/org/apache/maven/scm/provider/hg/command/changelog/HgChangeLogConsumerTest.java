@@ -83,6 +83,7 @@ public class HgChangeLogConsumerTest
         throws Exception
     {
         final HgChangeLogConsumer consumer = new HgChangeLogConsumer( new DefaultLog(), null);
+        // following log was generated with "hg --verbose log" from project http://code.google.com/p/gwt-customuibinder/
         consumeFile( getFile( "/hg/changelog/gwt-customuibinder.hglog.txt" ), consumer);
 
         final List<ChangeSet> changeLog = consumer.getModifications();
