@@ -136,7 +136,6 @@ public class HgChangeLogConsumer
             //Init a new changeset
             currentChange = new ChangeSet();
             currentChange.setFiles( new ArrayList<ChangeFile>( 0 ) );
-            logEntries.add( currentChange );
 
             //Reset memeber vars
             currentComment = new ArrayList<String>();
@@ -172,6 +171,7 @@ public class HgChangeLogConsumer
         }
         else if ( line.startsWith( REVNO_TAG ) )
         {
+            logEntries.add( currentChange );
             tmpLine = line.substring( REVNO_TAG.length() );
             tmpLine = tmpLine.trim();
             currentRevision = tmpLine.substring( tmpLine.indexOf( ':' ) + 1 );
