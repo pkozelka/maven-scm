@@ -90,6 +90,7 @@ public class HgChangeLogConsumerTest
         final Map<String, AtomicInteger> fileCountsPerExtension = new LinkedHashMap<String, AtomicInteger>(  );
         for ( ChangeSet changeSet : changeLog )
         {
+            Assert.assertNotNull( "revision is null", changeSet.getRevision() );
             for ( ChangeFile changeFile : changeSet.getFiles() )
             {
                 final int n = changeFile.getName().lastIndexOf( '.' );
