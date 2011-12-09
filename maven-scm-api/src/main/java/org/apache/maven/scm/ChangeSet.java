@@ -124,11 +124,13 @@ public class ChangeSet
 
     /**
      * Revision from which this one originates
+     * @since 1.7
      */
     private String parentRevision;
 
     /**
      * Revisions that were merged into this one
+     * @since 1.7
      */
     private Set<String> mergedRevisions;
 

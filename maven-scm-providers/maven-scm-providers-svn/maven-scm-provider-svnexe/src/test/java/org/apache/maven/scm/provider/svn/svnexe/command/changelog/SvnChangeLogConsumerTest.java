@@ -33,7 +33,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -254,7 +258,8 @@ public class SvnChangeLogConsumerTest
             for ( ChangeFile file : entry.getFiles() )
             {
                 final ScmFileStatus action = file.getAction();
-                if ( ! summary.containsKey( action ) ) {
+                if ( !summary.containsKey( action ) )
+                {
                     summary.put( action, new AtomicInteger() );
                 }
                 summary.get( action ).incrementAndGet();
@@ -268,8 +273,9 @@ public class SvnChangeLogConsumerTest
                 // files in this log are known not to contain space
                 Assert.assertEquals( "Unexpected space found in filename: " + fileName, -1, fileName.indexOf( " " ) );
 
-                if (file.getOriginalName() != null) {
-                    origFileCounter ++;
+                if ( file.getOriginalName() != null )
+                {
+                    origFileCounter++;
                 }
             }
 

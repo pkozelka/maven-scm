@@ -47,16 +47,19 @@ public class ChangeFile
     /**
      * edit type on the file
      * note: perhaps we should use a different type, ideally enum ? this one seems to target quite different usecases ...
+     * @since 1.7
      */
     private ScmFileStatus action;
 
     /**
      * the name before copying or moving
+     * @since 1.7
      */
     private String originalName;
 
     /**
      * the revision from which we {@link ScmFileStatus copied} or {@link ScmFileStatus moved} this file or directory
+     * @since 1.7
      */
     private String originalRevision;
 
