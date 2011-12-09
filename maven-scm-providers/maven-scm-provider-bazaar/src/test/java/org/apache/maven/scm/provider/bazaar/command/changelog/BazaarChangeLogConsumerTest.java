@@ -51,5 +51,9 @@ public class BazaarChangeLogConsumerTest
 
         List<ChangeSet> mods = consumer.getModifications();
         assertEquals( 4, mods.size() );
+        for ( ChangeSet mod : mods )
+        {
+            System.out.println(mod.toXML());
+        }
     }
 }

@@ -169,6 +169,7 @@ public class BazaarChangeLogConsumer
         {
             tmpLine = tmpLine.trim();
             ChangeFile changeFile = new ChangeFile( tmpLine, currentRevision );
+            changeFile.setAction( currentStatus );
             currentChange.addFile( changeFile );
         }
         else if ( line.startsWith( BRANCH_NICK_TOKEN ) )
